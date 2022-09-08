@@ -2,6 +2,7 @@ package com.learner.mediaapipractice
 
 import android.media.MediaExtractor
 import android.media.MediaFormat
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.learner.codereducer.local_tool.AppUtils.LogD
@@ -19,9 +20,9 @@ class MainActivity : AppCompatActivity() {
             "android.resource://${ConstValue.PackageName.myApp(this)}//raw/hart_sample.mp4"
 
         val extractor = MediaExtractor()
-        extractor.setDataSource(assets.openFd(assetPath))
+        //extractor.setDataSource(assets.openFd(assetPath))
         //extractor.setDataSource(this, Uri.parse(assetPath), null)
-        //extractor.setDataSource(this, Uri.parse(rawPath), null)
+        extractor.setDataSource(this, Uri.parse(rawPath), null)
 
         for (i in 0 until extractor.trackCount) {
             val mediaFormat = extractor.getTrackFormat(i)
