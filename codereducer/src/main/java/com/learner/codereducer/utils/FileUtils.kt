@@ -17,10 +17,7 @@ import android.provider.OpenableColumns
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
-import com.learner.codereducer.local_tool.AppUtils.LogD
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
+import com.learner.codereducer.local_tool.AppUtils.logD
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
@@ -140,7 +137,7 @@ object FileUtils {
         val outputStream: OutputStream
         val filePath: String
         try {
-            LogD("FileName: $fileName")
+            logD("FileName: $fileName")
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
                 val mimeType = "video/mp4"
                 val directory = Environment.DIRECTORY_MOVIES + "/$folderName"
@@ -171,16 +168,16 @@ object FileUtils {
             val buffer = ByteArray(1024)
             var len: Int
             while (inputStream.read(buffer).also { len = it } > 0) {
-                LogD("Copy file...")
+                logD("Copy file...")
                 outputStream.write(buffer, 0, len)
             }
-            LogD("Copied file")
+            logD("Copied file")
             inputStream.close()
             outputStream.close()
             return filePath
         } catch (e: IOException) {
             e.printStackTrace()
-            LogD("Exception ${e.stackTrace}")
+            logD("Exception ${e.stackTrace}")
             return "FAILED"
         }
     }
@@ -244,8 +241,8 @@ object FileUtils {
         if(!dir.exists()) dir.mkdir()
         val file = File(dir,name)
         if(file.exists()) return true*/
-        LogD("Downloading: ${file.name}")
-        LogD("Url: $url")
+        logD("Downloading: ${file.name}")
+        logD("Url: $url")
         val categoryPath = file.absolutePath.replaceAfterLast("/", "")
         File(categoryPath).mkdirs()
 
@@ -282,7 +279,7 @@ object FileUtils {
             fIn.close()
             connection.disconnect()
             cacheTFile.renameTo(file)
-            LogD("Download complete the ${file.name}")
+            logD("Download complete the ${file.name}")
             return true
         } catch (e: Exception) {
             Log.d("download status: ", "Download Failed, ${file.name}. Exception: $e")

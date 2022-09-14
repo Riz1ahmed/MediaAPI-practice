@@ -3,7 +3,7 @@ package com.learner.codereducer.utils
 import android.app.DatePickerDialog
 import android.content.Context
 import androidx.annotation.IntRange
-import com.learner.codereducer.local_tool.AppUtils.LogD
+import com.learner.codereducer.local_tool.AppUtils.logD
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,7 +27,7 @@ object TimeUtils {
                 SimpleDateFormat(toPattern, Locale.US).format(date)
             }
         } catch (e: Exception) {
-            LogD("dateConversion: $e")
+            logD("dateConversion: $e")
             null
         }
     }
