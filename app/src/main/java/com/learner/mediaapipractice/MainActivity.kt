@@ -1,16 +1,24 @@
 package com.learner.mediaapipractice
 
+import android.graphics.BitmapFactory
 import android.media.MediaExtractor
 import android.media.MediaFormat
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.learner.codereducer.local_tool.AppUtils.logD
-import com.learner.codereducer.utils.ConstValue
+import com.learner.mediaapipractice.databinding.ActivityMainBinding
+import java.nio.ByteBuffer
+
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
 
         val extractor = MediaExtractor()
         DataLoader.loadFromRaw(this, extractor, R.raw.hart_sample)
@@ -23,16 +31,26 @@ class MainActivity : AppCompatActivity() {
                 val vWidth = mediaFormat.getInteger(MediaFormat.KEY_WIDTH)
                 val vHeight = mediaFormat.getInteger(MediaFormat.KEY_HEIGHT)
                 val vDuration = mediaFormat.getLong(MediaFormat.KEY_DURATION)
-                val vRotate = try {
-                    mediaFormat.getInteger(MediaFormat.KEY_ROTATION)
-                } catch (e: Exception) {
-                    0
-                }
+                //val vRotate = try { mediaFormat.getInteger(MediaFormat.KEY_ROTATION) } catch (e: Exception) { 0 }
+                //logD("${vWidth}x$vHeight, ${vDuration / 1000 / 1000}, $vRotate")
 
-                logD("${vWidth}x$vHeight, ${vDuration / 1000 / 1000}, $vRotate")
-            } else if (mimeType == audioMime) {
-
+                extractor.selectTrack(i)
+                extractFramesFromSelectedVideo(extractor)
             }
+        }
+    }
+
+    private fun extractFramesFromSelectedVideo(extractor: MediaExtractor) {
+        val chunkSize = 1024 * 1024
+        val buffer = ByteBuffer.allocate(chunkSize)
+        while (extractor.readSampleData(buffer, 0) > 0) {
+            //Do something with buffer
+            val imageBytes = ByteArray(buffer.remaining())
+            buffer.get(imageBytes)
+            val bmp = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            binding.imageView.setImageBitmap(bmp)
+            logD("Buffer: $buffer")
+            extractor.advance()
         }
     }
 
