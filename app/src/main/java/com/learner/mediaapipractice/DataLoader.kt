@@ -2,6 +2,8 @@ package com.learner.mediaapipractice
 
 import android.content.Context
 import android.content.res.AssetFileDescriptor
+import android.content.res.AssetManager
+import android.content.res.Resources
 import android.media.MediaExtractor
 import android.net.Uri
 import android.util.TypedValue
@@ -18,8 +20,8 @@ object DataLoader {
         extractor.setDataSource(context, Uri.parse(filePath), null)
     }
 
-    fun loadFromAssetByFileDisc(context: Context, extractor: MediaExtractor, filePath: String) {
-        val afd = context.assets.openFd(filePath)
+    fun loadFromAsset(asset: AssetManager, extractor: MediaExtractor, filePath: String) {
+        val afd = asset.openFd(filePath)
         extractor.loadData(afd)
         //This is another working process
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) extractor.setDataSource(assetFd)
@@ -30,8 +32,8 @@ object DataLoader {
         extractor.loadData(context, Uri.parse(rawPath))
     }
 
-    fun loadFromRawByFileDisc(context: Context, extractor: MediaExtractor, @RawRes rawRes: Int) {
-        val afd = context.resources.openRawResourceFd(rawRes)
+    fun loadFromRaw(resources: Resources, extractor: MediaExtractor, @RawRes rawRes: Int) {
+        val afd = resources.openRawResourceFd(rawRes)
         extractor.loadData(afd)
 
         //This is another working process
