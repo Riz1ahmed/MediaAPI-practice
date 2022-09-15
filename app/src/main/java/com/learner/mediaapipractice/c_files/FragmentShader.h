@@ -1,0 +1,16 @@
+//
+// Created by LiiLab-Riz1 on 9/15/2022.
+//
+
+#ifndef MEDIA_API_PRACTICE_FRAGMENTSHADER_H
+#define MEDIA_API_PRACTICE_FRAGMENTSHADER_H
+
+
+
+class FragmentShader {
+
+};
+
+
+
+#endif //MEDIA_API_PRACTICE_FRAGMENTSHADER_H
